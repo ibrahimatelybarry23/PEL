@@ -43,4 +43,370 @@ export const EXERCISES = [
   {id:42,category:"Ricorsione",difficulty:"Difficile",title:"Permutazioni di una stringa",description:"Data una stringa con tutti caratteri distinti, restituisce un vettore con tutte le sue permutazioni.\nEsempio: permutations(\"ab\") = {\"ab\", \"ba\"}",signature:"vector<string> permutations(const string& s)",publicCases:[{input:'s = "ab"',expected:'{"ab","ba"}'},{input:'s = "abc"',expected:"6 permutazioni"},{input:'s = ""',expected:'{""}'}],hints:["s.size()<=1 -> return {s}","Per ogni indice i: scambia s[0] con s[i]","Ricorri su s.substr(1), preponi s[0] a ogni risultato"],testCode:"#include<iostream>\n#include<vector>\n#include<string>\n#include<algorithm>\nusing namespace std;\n__USER_CODE__\nint main(){\nint p=0;\nauto r1=permutations(\"ab\");sort(r1.begin(),r1.end());\nvector<string>e1={\"ab\",\"ba\"};\nif(r1==e1){cout<<\"PASS 0 got=\"<<r1.size()<<endl;p++;}else cout<<\"FAIL 0 got=\"<<r1.size()<<endl;\nauto r2=permutations(\"abc\");sort(r2.begin(),r2.end());\nif((int)r2.size()==6&&r2[0]==\"abc\"&&r2[5]==\"cba\"){cout<<\"PASS 1 got=\"<<r2.size()<<endl;p++;}else cout<<\"FAIL 1 got=\"<<r2.size()<<endl;\nauto r3=permutations(\"\");\nif(r3.size()==1&&r3[0]==\"\"){cout<<\"PASS 2 got=\"<<r3.size()<<endl;p++;}else cout<<\"FAIL 2 got=\"<<r3.size()<<endl;\nauto r4=permutations(\"a\");\nif(r4.size()==1&&r4[0]==\"a\"){cout<<\"PASS 3 got=\"<<r4.size()<<endl;p++;}else cout<<\"FAIL 3 got=\"<<r4.size()<<endl;\nauto r5=permutations(\"abcd\");\nif((int)r5.size()==24){cout<<\"PASS 4 got=\"<<r5.size()<<endl;p++;}else cout<<\"FAIL 4 got=\"<<r5.size()<<endl;\nauto r6=permutations(\"bc\");sort(r6.begin(),r6.end());\nvector<string>e6={\"bc\",\"cb\"};\nif(r6==e6){cout<<\"PASS 5 got=\"<<r6.size()<<endl;p++;}else cout<<\"FAIL 5 got=\"<<r6.size()<<endl;\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",starterCode:"vector<string> permutations(const string& s) {\n    // s.size() <= 1 -> return {s}\n    // Per ogni i: scambia s[0] con s[i]\n    // Ricorri su s.substr(1)\n    // Preponi s[0] a ogni permutazione restituita\n}"},
   {id:43,category:"Ricorsione",difficulty:"Facile",title:"Torre di Hanoi - mosse",description:"Calcola ricorsivamente il numero minimo di mosse per spostare n dischi.\nFormula: T(1)=1, T(n) = 2*T(n-1) + 1",signature:"int hanoi_count(int n)",publicCases:[{input:"n = 1",expected:"1"},{input:"n = 2",expected:"3"},{input:"n = 3",expected:"7"}],hints:["n == 0 -> 0","n == 1 -> 1","2 * hanoi_count(n-1) + 1"],testCode:"#include<iostream>\nusing namespace std;\n__USER_CODE__\nint main(){\nint t[]={1,2,3,4,5,10};\nint e[]={1,3,7,15,31,1023};int p=0;\nfor(int i=0;i<6;i++){int r=hanoi_count(t[i]);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",starterCode:"int hanoi_count(int n) {\n    // n == 0 -> 0\n    // n == 1 -> 1\n    // 2 * hanoi_count(n-1) + 1\n}"},
   {id:44,category:"Ricorsione",difficulty:"Facile",title:"Vettore ordinato?",description:"Verifica ricorsivamente se un vettore e ordinato in modo non-decrescente.",signature:"bool is_sorted_rec(const vector<int>& v, int idx)",publicCases:[{input:"v={1,2,3,4,5}, idx=0",expected:"true"},{input:"v={5,3,1}, idx=0",expected:"false"},{input:"v={1,1,2}, idx=0",expected:"true"}],hints:["idx >= v.size()-1 -> true (vettore vuoto o un elemento)","v[idx] > v[idx+1] -> false","else: is_sorted_rec(v, idx+1)"],testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint main(){\nvector<int>v1={1,2,3,4,5},v2={5,3,1},v3={1},v4={},v5={1,1,2},v6={2,1,3};\nbool e[]={1,0,1,1,1,0};int p=0;\nbool r[]={is_sorted_rec(v1,0),is_sorted_rec(v2,0),is_sorted_rec(v3,0),is_sorted_rec(v4,0),is_sorted_rec(v5,0),is_sorted_rec(v6,0)};\nfor(int i=0;i<6;i++){if(r[i]==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r[i]<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",starterCode:"bool is_sorted_rec(const vector<int>& v, int idx) {\n    // idx >= v.size()-1 -> true\n    // v[idx] > v[idx+1] -> false\n    // altrimenti ricorri con idx+1\n}"},
+  {id:45,category:"Ricorsione",difficulty:"Facile",title:"Prodotto ricorsivo",
+  description:"Dato un vettore di interi, calcola ricorsivamente il prodotto di tutti gli elementi a partire da idx.\nVettore vuoto o idx fuori bounds restituisce 1.",
+  signature:"int product_from(const vector<int>& v, int idx)",
+  publicCases:[{input:"v={2,3,4}, idx=0",expected:"24"},{input:"v={}, idx=0",expected:"1"},{input:"v={5,1,2}, idx=1",expected:"2"}],
+  hints:["idx >= v.size() restituisce 1","v[idx] * product_from(v, idx+1)","No cicli"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint main(){\nvector<int>v1={2,3,4},v2={},v3={5,1,2},v4={1,1,1,1},v5={-2,3},v6={10};\nint e[]={24,1,2,1,-6,10};int p=0;\nint r[]={product_from(v1,0),product_from(v2,0),product_from(v3,1),product_from(v4,0),product_from(v5,0),product_from(v6,0)};\nfor(int i=0;i<6;i++){if(r[i]==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r[i]<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r[i]<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"int product_from(const vector<int>& v, int idx) {\n    // idx >= v.size() -> return 1\n    // return v[idx] * product_from(v, idx+1)\n}"},
+
+  {id:46,category:"Ricorsione",difficulty:"Facile",title:"Palindromo ricorsivo",
+  description:"Verifica ricorsivamente se una stringa è palindroma.\nUsa due indici l e r che si avvicinano al centro.",
+  signature:"bool is_palindrome_rec(const string& s, int l, int r)",
+  publicCases:[{input:"s=\"racecar\", l=0, r=6",expected:"true"},{input:"s=\"hello\", l=0, r=4",expected:"false"},{input:"s=\"a\", l=0, r=0",expected:"true"}],
+  hints:["l >= r -> true (caso base)","s[l] != s[r] -> false","Altrimenti: is_palindrome_rec(s, l+1, r-1)"],
+  testCode:"#include<iostream>\n#include<string>\nusing namespace std;\n__USER_CODE__\nint main(){\nstring t[]={\"racecar\",\"hello\",\"a\",\"abba\",\"\",\"ab\"};\nbool e[]={1,0,1,1,1,0};int p=0;\nfor(int i=0;i<6;i++){\nbool r=t[i].empty()?true:is_palindrome_rec(t[i],0,(int)t[i].size()-1);\nif(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"bool is_palindrome_rec(const string& s, int l, int r) {\n    // l >= r -> return true\n    // s[l] != s[r] -> return false\n    // return is_palindrome_rec(s, l+1, r-1)\n}"},
+
+  {id:47,category:"Ricorsione",difficulty:"Facile",title:"Conta occorrenze carattere",
+  description:"Data una stringa e un carattere, conta ricorsivamente quante volte il carattere appare.\nLa funzione accetta solo la stringa e il carattere (no idx).",
+  signature:"int count_char(const string& s, char c)",
+  publicCases:[{input:"s=\"hello\", c='l'",expected:"2"},{input:"s=\"\", c='a'",expected:"0"},{input:"s=\"banana\", c='a'",expected:"3"}],
+  hints:["s.empty() -> 0","Primo carattere: s[0] == c ? 1 : 0","Poi: count_char(s.substr(1), c)"],
+  testCode:"#include<iostream>\n#include<string>\nusing namespace std;\n__USER_CODE__\nint main(){\nstring t[]={\"hello\",\"\",\"banana\",\"aaa\",\"xyz\",\"abcabc\"};\nchar ch[]={'l','a','a','a','a','b'};\nint e[]={2,0,3,3,0,2};int p=0;\nfor(int i=0;i<6;i++){int r=count_char(t[i],ch[i]);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"int count_char(const string& s, char c) {\n    // s.empty() -> return 0\n    // (s[0] == c ? 1 : 0) + count_char(s.substr(1), c)\n}"},
+
+  {id:48,category:"Ricorsione",difficulty:"Medio",title:"Potenza veloce",
+  description:"Calcola base^exp ricorsivamente in O(log n) usando la proprietà:\nse exp è pari: base^exp = (base^(exp/2))^2\nse exp è dispari: base^exp = base * base^(exp-1)",
+  signature:"long long fast_power(long long base, int exp)",
+  publicCases:[{input:"base=2, exp=10",expected:"1024"},{input:"base=3, exp=0",expected:"1"},{input:"base=2, exp=11",expected:"2048"}],
+  hints:["exp == 0 -> 1","exp pari: long long half = fast_power(base, exp/2); return half*half","exp dispari: return base * fast_power(base, exp-1)"],
+  testCode:"#include<iostream>\nusing namespace std;\n__USER_CODE__\nint main(){\nlong long b[]={2,3,2,5,2,7};int x[]={10,0,11,4,0,3};\nlong long e[]={1024,1,2048,625,1,343};int p=0;\nfor(int i=0;i<6;i++){long long r=fast_power(b[i],x[i]);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"long long fast_power(long long base, int exp) {\n    // exp == 0 -> return 1\n    // exp pari: long long half = fast_power(base, exp/2);\n    //           return half * half;\n    // exp dispari: return base * fast_power(base, exp-1);\n}"},
+
+  {id:49,category:"Ricorsione",difficulty:"Medio",title:"Sottosequenza ricorsiva",
+  description:"Verifica ricorsivamente se T è una sottosequenza di S.\nT è sottosequenza di S se tutti i caratteri di T appaiono in S nello stesso ordine (non necessariamente contigui).",
+  signature:"bool is_subsequence(const string& s, const string& t, int i, int j)",
+  publicCases:[{input:"s=\"abcde\", t=\"ace\", i=0, j=0",expected:"true"},{input:"s=\"abcde\", t=\"aec\", i=0, j=0",expected:"false"},{input:"s=\"abc\", t=\"\", i=0, j=0",expected:"true"}],
+  hints:["j >= t.size() -> true (T esaurito: successo)","i >= s.size() -> false (S esaurito: fallimento)","s[i]==t[j] -> avanza entrambi; altrimenti avanza solo i"],
+  testCode:"#include<iostream>\n#include<string>\nusing namespace std;\n__USER_CODE__\nint main(){\nstring s[]={\"abcde\",\"abcde\",\"abc\",\"abc\",\"axbycz\",\"abc\"};\nstring t[]={\"ace\",\"aec\",\"\",\"abcd\",\"xyz\",\"abc\"};\nbool e[]={1,0,1,0,1,1};int p=0;\nfor(int i=0;i<6;i++){bool r=is_subsequence(s[i],t[i],0,0);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"bool is_subsequence(const string& s, const string& t, int i, int j) {\n    // j >= t.size() -> return true\n    // i >= s.size() -> return false\n    // if (s[i] == t[j]) return is_subsequence(s, t, i+1, j+1)\n    // else              return is_subsequence(s, t, i+1, j)\n}"},
+
+  {id:50,category:"Ricorsione",difficulty:"Difficile",title:"Merge Sort",
+  description:"Ordina un vettore in ordine crescente implementando ricorsivamente il Merge Sort.\nDividi a metà, ordina le due metà, poi fondi.",
+  signature:"void merge_sort(vector<int>& v, int left, int right)",
+  publicCases:[{input:"v={5,3,1,4,2}, left=0, right=4",expected:"{1,2,3,4,5}"},{input:"v={1}, left=0, right=0",expected:"{1}"},{input:"v={3,1}, left=0, right=1",expected:"{1,3}"}],
+  hints:["left >= right -> return (caso base)","mid = (left+right)/2","Chiama merge_sort sulle due metà, poi fondi con un vettore temporaneo"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nvoid pv(const vector<int>&v){cout<<\"{\";for(size_t i=0;i<v.size();i++){if(i)cout<<\",\";cout<<v[i];}cout<<\"}\";}\nint main(){\nvector<vector<int>>t={{5,3,1,4,2},{1},{3,1},{},{5,5,3,3,1},{9,8,7,6}};\nvector<vector<int>>e={{1,2,3,4,5},{1},{1,3},{},{1,3,3,5,5},{6,7,8,9}};int p=0;\nfor(int i=0;i<6;i++){auto v=t[i];if(!v.empty())merge_sort(v,0,(int)v.size()-1);if(v==e[i]){cout<<\"PASS \"<<i<<\" got=\";pv(v);cout<<endl;p++;}else{cout<<\"FAIL \"<<i<<\" got=\";pv(v);cout<<endl;}}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"void merge_sort(vector<int>& v, int left, int right) {\n    // left >= right -> return\n    // int mid = (left + right) / 2;\n    // merge_sort(v, left, mid);\n    // merge_sort(v, mid+1, right);\n    // Fondi v[left..mid] e v[mid+1..right] in un vettore temp\n    // Copia temp in v[left..right]\n}"},
+
+
+
+
+    // ── RICORSIONE LINEARE ────────────────────────────────────────────────────
+
+  {id:51,category:"Ricorsione",difficulty:"Facile",title:"Conta pari ricorsivo",
+  description:"Dato un vettore, conta ricorsivamente quanti elementi sono pari.\nUsa solo idx come parametro aggiuntivo.",
+  signature:"int count_even(const vector<int>& v, int idx)",
+  publicCases:[{input:"v={1,2,3,4,6}, idx=0",expected:"3"},{input:"v={}, idx=0",expected:"0"},{input:"v={1,3,5}, idx=0",expected:"0"}],
+  hints:["idx >= v.size() -> 0","(v[idx] % 2 == 0 ? 1 : 0) + count_even(v, idx+1)","No cicli"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint main(){\nvector<vector<int>>t={{1,2,3,4,6},{},{1,3,5},{2,4,6},{0,1,2},{-2,1,4}};\nint e[]={3,0,0,3,2,2};int p=0;\nfor(int i=0;i<6;i++){int r=count_even(t[i],0);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"int count_even(const vector<int>& v, int idx) {\n    // idx >= v.size() -> return 0\n    // (v[idx] % 2 == 0 ? 1 : 0) + count_even(v, idx+1)\n}"},
+
+  {id:52,category:"Ricorsione",difficulty:"Facile",title:"Tutti positivi",
+  description:"Verifica ricorsivamente se TUTTI gli elementi del vettore sono positivi (> 0).\nUsa idx come parametro aggiuntivo.",
+  signature:"bool all_positive(const vector<int>& v, int idx)",
+  publicCases:[{input:"v={1,2,3}, idx=0",expected:"true"},{input:"v={1,-1,3}, idx=0",expected:"false"},{input:"v={}, idx=0",expected:"true"}],
+  hints:["idx >= v.size() -> true (nessun elemento negativo trovato)","v[idx] <= 0 -> false","Altrimenti: all_positive(v, idx+1)"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint main(){\nvector<vector<int>>t={{1,2,3},{1,-1,3},{},{0,1,2},{5,5,5},{-1}};\nbool e[]={1,0,1,0,1,0};int p=0;\nfor(int i=0;i<6;i++){bool r=all_positive(t[i],0);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"bool all_positive(const vector<int>& v, int idx) {\n    // idx >= v.size() -> return true\n    // v[idx] <= 0 -> return false\n    // return all_positive(v, idx+1)\n}"},
+
+  {id:53,category:"Ricorsione",difficulty:"Facile",title:"Primo elemento che soddisfa",
+  description:"Dato un vettore e un target, restituisci ricorsivamente l'indice della prima occorrenza del target.\nSe non trovato restituisce -1.",
+  signature:"int find_first(const vector<int>& v, int target, int idx)",
+  publicCases:[{input:"v={3,7,1,7,2}, target=7, idx=0",expected:"1"},{input:"v={1,2,3}, target=5, idx=0",expected:"-1"},{input:"v={5}, target=5, idx=0",expected:"0"}],
+  hints:["idx >= v.size() -> -1","v[idx] == target -> idx","Altrimenti: find_first(v, target, idx+1)"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint main(){\nvector<int>v1={3,7,1,7,2},v2={1,2,3},v3={5},v4={},v5={1,1,1},v6={2,4,6};\nint tg[]={7,5,5,1,1,4};\nint e[]={1,-1,0,-1,0,1};int p=0;\nvector<vector<int>*>vs={&v1,&v2,&v3,&v4,&v5,&v6};\nfor(int i=0;i<6;i++){int r=find_first(*vs[i],tg[i],0);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"int find_first(const vector<int>& v, int target, int idx) {\n    // idx >= v.size() -> return -1\n    // v[idx] == target -> return idx\n    // return find_first(v, target, idx+1)\n}"},
+
+  {id:54,category:"Ricorsione",difficulty:"Facile",title:"Inverti vettore in-place",
+  description:"Inverti ricorsivamente il vettore usando due indici l e r.\nScambia gli estremi e avanza verso il centro.",
+  signature:"void reverse_vec(vector<int>& v, int l, int r)",
+  publicCases:[{input:"v={1,2,3,4,5}",expected:"{5,4,3,2,1}"},{input:"v={1,2}",expected:"{2,1}"},{input:"v={42}",expected:"{42}"}],
+  hints:["l >= r -> return (caso base)","swap(v[l], v[r])","reverse_vec(v, l+1, r-1)"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nvoid pv(const vector<int>&v){cout<<\"{\";for(size_t i=0;i<v.size();i++){if(i)cout<<\",\";cout<<v[i];}cout<<\"}\";}\nint main(){\nvector<vector<int>>t={{1,2,3,4,5},{1,2},{42},{},{3,1,4,1,5},{10,20,30}};\nvector<vector<int>>e={{5,4,3,2,1},{2,1},{42},{},{5,1,4,1,3},{30,20,10}};int p=0;\nfor(int i=0;i<6;i++){auto v=t[i];if(!v.empty())reverse_vec(v,0,(int)v.size()-1);if(v==e[i]){cout<<\"PASS \"<<i<<\" got=\";pv(v);cout<<endl;p++;}else{cout<<\"FAIL \"<<i<<\" got=\";pv(v);cout<<endl;}}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"void reverse_vec(vector<int>& v, int l, int r) {\n    // l >= r -> return\n    // swap(v[l], v[r])\n    // reverse_vec(v, l+1, r-1)\n}"},
+
+  // ── RICORSIONE BINARIA / D&C ──────────────────────────────────────────────
+
+  {id:55,category:"Ricorsione",difficulty:"Medio",title:"Minimo e massimo D&C",
+  description:"Trova ricorsivamente il minimo e il massimo di v[left..right] con Divide & Conquer.\nRestituisce una coppia {min, max}.",
+  signature:"pair<int,int> minmax(const vector<int>& v, int left, int right)",
+  publicCases:[{input:"v={3,7,1,9,2}, left=0, right=4",expected:"{1,9}"},{input:"v={5}, left=0, right=0",expected:"{5,5}"},{input:"v={4,2}, left=0, right=1",expected:"{2,4}"}],
+  hints:["left == right -> {v[left], v[left]}","mid = (left+right)/2","Combina: min(lMin,rMin), max(lMax,rMax)"],
+  testCode:"#include<iostream>\n#include<vector>\n#include<utility>\nusing namespace std;\n__USER_CODE__\nint main(){\nvector<int>v1={3,7,1,9,2},v2={5},v3={4,2},v4={1,1,1},v5={-3,-1,-5},v6={10,20,5,15};\nvector<pair<int,int>>e={{1,9},{5,5},{2,4},{1,1},{-5,-1},{5,20}};int p=0;\nvector<pair<vector<int>*,pair<int,int>>>tc={{&v1,{0,4}},{&v2,{0,0}},{&v3,{0,1}},{&v4,{0,2}},{&v5,{0,2}},{&v6,{0,3}}};\nfor(int i=0;i<6;i++){auto[vp,lr]=tc[i];auto[l,r]=lr;auto res=minmax(*vp,l,r);if(res==e[i]){cout<<\"PASS \"<<i<<\" got={\"<<res.first<<\",\"<<res.second<<\"}\"<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got={\"<<res.first<<\",\"<<res.second<<\"}\"<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"pair<int,int> minmax(const vector<int>& v, int left, int right) {\n    // left == right -> return {v[left], v[left]}\n    // int mid = (left + right) / 2;\n    // auto [lMin, lMax] = minmax(v, left, mid);\n    // auto [rMin, rMax] = minmax(v, mid+1, right);\n    // return {min(lMin, rMin), max(lMax, rMax)};\n}"},
+
+  {id:56,category:"Ricorsione",difficulty:"Medio",title:"Somma D&C",
+  description:"Calcola la somma di v[left..right] con Divide & Conquer.\nDividi a metà, somma le due metà ricorsivamente.",
+  signature:"int sum_dc(const vector<int>& v, int left, int right)",
+  publicCases:[{input:"v={1,2,3,4,5}, left=0, right=4",expected:"15"},{input:"v={7}, left=0, right=0",expected:"7"},{input:"v={1,2,3}, left=1, right=2",expected:"5"}],
+  hints:["left == right -> v[left]","mid = (left+right)/2","sum_dc(left,mid) + sum_dc(mid+1,right)"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint main(){\nvector<int>v1={1,2,3,4,5},v2={7},v3={1,2,3},v4={-1,-2,-3},v5={10,10},v6={1,1,1,1,1,1};\ntuple<vector<int>*,int,int>tc[]={{&v1,0,4},{&v2,0,0},{&v3,1,2},{&v4,0,2},{&v5,0,1},{&v6,0,5}};\nint e[]={15,7,5,-6,20,6};int p=0;\nfor(int i=0;i<6;i++){auto[vp,l,r]=tc[i];int res=sum_dc(*vp,l,r);if(res==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<res<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<res<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"int sum_dc(const vector<int>& v, int left, int right) {\n    // left == right -> return v[left]\n    // int mid = (left + right) / 2;\n    // return sum_dc(v, left, mid) + sum_dc(v, mid+1, right);\n}"},
+
+  {id:57,category:"Ricorsione",difficulty:"Medio",title:"Conta inversioni",
+  description:"Due elementi v[i] e v[j] formano un'inversione se i < j ma v[i] > v[j].\nConta ricorsivamente le inversioni. Suggerimento: usa Merge Sort modificato.",
+  signature:"int count_inversions(vector<int>& v, int left, int right)",
+  publicCases:[{input:"v={3,1,2}, left=0, right=2",expected:"2"},{input:"v={1,2,3}, left=0, right=2",expected:"0"},{input:"v={3,2,1}, left=0, right=2",expected:"3"}],
+  hints:["left >= right -> 0","Conta inv nella metà sinistra + destra + tra le due","Durante il merge: quando prendi da destra, aggiungi (mid-i+1) inversioni"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint main(){\nvector<int>v1={3,1,2},v2={1,2,3},v3={3,2,1},v4={1},v5={2,1},v6={1,3,2,3,1};\nvector<int>e1=v1,e2=v2,e3=v3,e4=v4,e5=v5,e6=v6;\nint e[]={2,0,3,0,1,4};int p=0;\nfor(int i=0;i<6;i++){\nvector<vector<int>*>vs={&v1,&v2,&v3,&v4,&v5,&v6};\nauto v=*vs[i];\nint r=v.size()<=1?0:count_inversions(v,0,(int)v.size()-1);\nif(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"int merge_count(vector<int>& v, int left, int mid, int right) {\n    vector<int> tmp;\n    int i = left, j = mid+1, inv = 0;\n    while (i <= mid && j <= right) {\n        if (v[i] <= v[j]) tmp.push_back(v[i++]);\n        else { inv += mid - i + 1; tmp.push_back(v[j++]); }\n    }\n    while (i <= mid)  tmp.push_back(v[i++]);\n    while (j <= right) tmp.push_back(v[j++]);\n    for (int k = left; k <= right; k++) v[k] = tmp[k-left];\n    return inv;\n}\nint count_inversions(vector<int>& v, int left, int right) {\n    // left >= right -> return 0\n    // int mid = (left+right)/2;\n    // int inv = count_inversions(v, left, mid)\n    //         + count_inversions(v, mid+1, right);\n    // return inv + merge_count(v, left, mid, right);\n}"},
+
+  // ── BACKTRACKING ──────────────────────────────────────────────────────────
+
+  {id:58,category:"Ricorsione",difficulty:"Medio",title:"Tutti i sottoinsiemi",
+  description:"Genera tutti i sottoinsiemi di un vettore di interi (l'ordine degli elementi in ogni sottoinsieme non conta, ma l'ordine dei sottoinsiemi nella lista sì: segui l'ordine naturale include/escludi).",
+  signature:"void subsets(const vector<int>& v, int idx, vector<int>& curr, vector<vector<int>>& res)",
+  publicCases:[{input:"v={1,2,3}",expected:"{{},{1},{1,2},{1,2,3},{1,3},{2},{2,3},{3}}"},{input:"v={}",expected:"{{}}"}],
+  hints:["idx == v.size() -> push_back curr e return","Ramo ESCLUDI: subsets(v, idx+1, curr, res) senza aggiungere","Ramo INCLUDI: curr.push_back(v[idx]); ...; curr.pop_back()"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint main(){\nvector<int>v1={1,2,3},v2={},v3={5},v4={1,2};\nvector<vector<vector<int>>>e={\n  {{},{1},{1,2},{1,2,3},{1,3},{2},{2,3},{3}},\n  {{}},\n  {{},{5}},\n  {{},{1},{1,2},{2}}\n};int p=0;\nvector<vector<int>*>vs={&v1,&v2,&v3,&v4};\nfor(int i=0;i<4;i++){vector<int>curr;vector<vector<int>>res;subsets(*vs[i],0,curr,res);if(res==e[i]){cout<<\"PASS \"<<i<<endl;p++;}else cout<<\"FAIL \"<<i<<endl;}\ncout<<\"SCORE \"<<p<<\"/4\"<<endl;}",
+  starterCode:"void subsets(const vector<int>& v, int idx,\n             vector<int>& curr, vector<vector<int>>& res) {\n    // idx == v.size() -> res.push_back(curr); return\n    // Escludi: subsets(v, idx+1, curr, res)\n    // Includi:\n    //   curr.push_back(v[idx]);\n    //   subsets(v, idx+1, curr, res);\n    //   curr.pop_back();\n}"},
+
+  {id:59,category:"Ricorsione",difficulty:"Medio",title:"Combinazioni di k elementi",
+  description:"Genera tutte le combinazioni di k elementi scelti da {1..n}.\nL'output deve essere in ordine lessicografico.",
+  signature:"void combine(int n, int k, int start, vector<int>& curr, vector<vector<int>>& res)",
+  publicCases:[{input:"n=4, k=2",expected:"{{1,2},{1,3},{1,4},{2,3},{2,4},{3,4}}"},{input:"n=3, k=3",expected:"{{1,2,3}}"},{input:"n=2, k=1",expected:"{{1},{2}}"}],
+  hints:["curr.size() == k -> push_back e return","for i da start a n: aggiungi, ricorri, rimuovi","Pruning: se n - i + 1 < k - curr.size() interrompi"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint main(){\nvector<tuple<int,int>>tc={{4,2},{3,3},{2,1},{1,1},{3,1},{4,3}};\nvector<vector<vector<int>>>e={\n  {{1,2},{1,3},{1,4},{2,3},{2,4},{3,4}},\n  {{1,2,3}},\n  {{1},{2}},\n  {{1}},\n  {{1},{2},{3}},\n  {{1,2,3},{1,2,4},{1,3,4},{2,3,4}}\n};int p=0;\nfor(int i=0;i<6;i++){auto[n,k]=tc[i];vector<int>curr;vector<vector<int>>res;combine(n,k,1,curr,res);if(res==e[i]){cout<<\"PASS \"<<i<<endl;p++;}else cout<<\"FAIL \"<<i<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"void combine(int n, int k, int start,\n             vector<int>& curr, vector<vector<int>>& res) {\n    // (int)curr.size() == k -> res.push_back(curr); return\n    // for (int i = start; i <= n; i++) {\n    //     curr.push_back(i);\n    //     combine(n, k, i+1, curr, res);\n    //     curr.pop_back();\n    // }\n}"},
+
+  {id:60,category:"Ricorsione",difficulty:"Medio",title:"Labirinto: conta percorsi",
+  description:"Data una griglia NxM di 0 (libero) e 1 (muro), conta ricorsivamente quanti percorsi distinti vanno da (0,0) a (N-1,M-1) muovendosi solo destra o giù.",
+  signature:"int count_paths(const vector<vector<int>>& grid, int r, int c)",
+  publicCases:[{input:"grid={{0,0,0},{0,0,0},{0,0,0}}",expected:"6"},{input:"grid={{0,1},{0,0}}",expected:"1"},{input:"grid={{0,0},{1,0}}",expected:"1"}],
+  hints:["r==N-1 && c==M-1 -> 1 (arrivo)","grid[r][c]==1 -> 0 (muro)","r o c fuori bounds -> 0","count_paths(r+1,c) + count_paths(r,c+1)"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint main(){\nvector<vector<vector<int>>>g={\n  {{0,0,0},{0,0,0},{0,0,0}},\n  {{0,1},{0,0}},\n  {{0,0},{1,0}},\n  {{0}},\n  {{0,0,0},{0,1,0},{0,0,0}},\n  {{0,0},{0,0}}\n};\nint e[]={6,1,1,1,2,2};int p=0;\nfor(int i=0;i<6;i++){int r=count_paths(g[i],0,0);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"int count_paths(const vector<vector<int>>& grid, int r, int c) {\n    int N = grid.size(), M = grid[0].size();\n    // r >= N || c >= M -> return 0\n    // grid[r][c] == 1  -> return 0\n    // r==N-1 && c==M-1 -> return 1\n    // return count_paths(grid, r+1, c) + count_paths(grid, r, c+1)\n}"},
+
+  {id:61,category:"Ricorsione",difficulty:"Difficile",title:"N-Regine",
+  description:"Posiziona N regine su una scacchiera NxN in modo che nessuna si attacchi.\nRestituisce tutte le soluzioni come vettori di colonne (queen_col[riga]).",
+  signature:"void n_queens(int n, int row, vector<int>& cols, vector<vector<int>>& res)",
+  publicCases:[{input:"n=4",expected:"2 soluzioni"},{input:"n=1",expected:"1 soluzione"},{input:"n=3",expected:"0 soluzioni"}],
+  hints:["row == n -> salva soluzione","Per ogni col: controlla conflitti con le righe precedenti","Conflitto: cols[i]==c oppure abs(cols[i]-c)==row-i"],
+  testCode:"#include<iostream>\n#include<vector>\n#include<cmath>\nusing namespace std;\n__USER_CODE__\nint main(){\nint t[]={4,1,3,5,6,8};int e[]={2,1,0,10,4,92};int p=0;\nfor(int i=0;i<6;i++){vector<int>cols;vector<vector<int>>res;n_queens(t[i],0,cols,res);if((int)res.size()==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<res.size()<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<res.size()<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"bool is_safe(const vector<int>& cols, int row, int col) {\n    for (int i = 0; i < row; i++)\n        if (cols[i] == col || abs(cols[i]-col) == row-i)\n            return false;\n    return true;\n}\nvoid n_queens(int n, int row, vector<int>& cols, vector<vector<int>>& res) {\n    // row == n -> res.push_back(cols); return\n    // for col in 0..n-1:\n    //   if is_safe(cols, row, col):\n    //     cols.push_back(col)\n    //     n_queens(n, row+1, cols, res)\n    //     cols.pop_back()\n}"},
+
+  {id:62,category:"Ricorsione",difficulty:"Difficile",title:"Sudoku Solver",
+  description:"Risolvi una griglia Sudoku 9x9 con backtracking.\n0 rappresenta una cella vuota. Modifica la griglia in-place e restituisce true se risolvibile.",
+  signature:"bool solve_sudoku(vector<vector<int>>& board)",
+  publicCases:[{input:"griglia valida con soluzione unica",expected:"true, griglia completata"},{input:"griglia già completa",expected:"true"},{input:"griglia impossibile",expected:"false"}],
+  hints:["Cerca la prima cella con 0","Prova 1-9: controlla riga, colonna e box 3x3","Se nessun numero funziona: backtrack (rimetti 0)"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint main(){\nvector<vector<int>>b1={\n  {5,3,0,0,7,0,0,0,0},{6,0,0,1,9,5,0,0,0},{0,9,8,0,0,0,0,6,0},\n  {8,0,0,0,6,0,0,0,3},{4,0,0,8,0,3,0,0,1},{7,0,0,0,2,0,0,0,6},\n  {0,6,0,0,0,0,2,8,0},{0,0,0,4,1,9,0,0,5},{0,0,0,0,8,0,0,7,9}\n};\nbool r1=solve_sudoku(b1);\nbool valid=true;\nif(r1){for(auto&row:b1){int s=0;for(int x:row)s+=x;if(s!=45)valid=false;}}else valid=false;\ncout<<(valid?\"PASS 0\":\"FAIL 0\")<<endl;\nvector<vector<int>>b2={\n  {1,2,3,4,5,6,7,8,9},{4,5,6,7,8,9,1,2,3},{7,8,9,1,2,3,4,5,6},\n  {2,1,4,3,6,5,8,9,7},{3,6,5,8,9,7,2,1,4},{8,9,7,2,1,4,3,6,5},\n  {5,3,1,6,4,2,9,7,8},{6,4,2,9,7,8,5,3,1},{9,7,8,5,3,1,6,4,2}\n};\nbool r2=solve_sudoku(b2);cout<<(r2?\"PASS 1\":\"FAIL 1\")<<endl;\ncout<<\"SCORE \"<<(int(valid)+int(r2))<<\"/2\"<<endl;}",
+  starterCode:"bool is_valid(vector<vector<int>>& b, int r, int c, int num) {\n    for (int i = 0; i < 9; i++)\n        if (b[r][i]==num || b[i][c]==num) return false;\n    int br = (r/3)*3, bc = (c/3)*3;\n    for (int i = 0; i < 3; i++)\n        for (int j = 0; j < 3; j++)\n            if (b[br+i][bc+j]==num) return false;\n    return true;\n}\nbool solve_sudoku(vector<vector<int>>& board) {\n    // Cerca prima cella con 0\n    // Se non trovata -> return true\n    // Prova 1-9: if is_valid -> metti num, if solve_sudoku -> return true\n    // Nessuno funziona -> rimetti 0, return false\n}"},
+
+  // ── MEMOIZED DP (TOP-DOWN) ────────────────────────────────────────────────
+
+  {id:63,category:"Ricorsione",difficulty:"Medio",title:"Scala: conta modi",
+  description:"Puoi salire 1 o 2 gradini alla volta. In quanti modi distinti puoi raggiungere il gradino n?\nUsa memoizzazione.",
+  signature:"int climb_stairs(int n, vector<int>& memo)",
+  publicCases:[{input:"n=3",expected:"3"},{input:"n=5",expected:"8"},{input:"n=1",expected:"1"}],
+  hints:["n <= 0 -> 1 (modo di non fare nulla) / gestisci caso base n=0","memo[n] != -1 -> return memo[n]","memo[n] = climb_stairs(n-1) + climb_stairs(n-2)"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint main(){\nint t[]={3,5,1,2,10,6};\nint e[]={3,8,1,2,89,13};int p=0;\nfor(int i=0;i<6;i++){vector<int>memo(t[i]+1,-1);int r=climb_stairs(t[i],memo);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"int climb_stairs(int n, vector<int>& memo) {\n    // n <= 1 -> return 1\n    // memo[n] != -1 -> return memo[n]\n    // return memo[n] = climb_stairs(n-1, memo) + climb_stairs(n-2, memo)\n}"},
+
+  {id:64,category:"Ricorsione",difficulty:"Medio",title:"Longest Increasing Subsequence",
+  description:"Dato un vettore, calcola la lunghezza della più lunga sottosequenza strettamente crescente.\nUsa memoizzazione su (idx, prev_idx).",
+  signature:"int lis(const vector<int>& v, int idx, int prev, vector<vector<int>>& memo)",
+  publicCases:[{input:"v={10,9,2,5,3,7,101,18}",expected:"4"},{input:"v={1,2,3,4,5}",expected:"5"},{input:"v={5,4,3,2,1}",expected:"1"}],
+  hints:["idx == v.size() -> 0","memo[idx][prev+1] != -1 -> return memo","Scegli: escludi idx (0 + lis(idx+1,...)) o includi se v[idx] > v[prev] (1 + lis(idx+1,...))"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint solve_lis(const vector<int>&v){int n=v.size();vector<vector<int>>memo(n,vector<int>(n+1,-1));return lis(v,0,-1,memo);}\nint main(){\nvector<vector<int>>t={{10,9,2,5,3,7,101,18},{1,2,3,4,5},{5,4,3,2,1},{3},{7,7,7},{1,3,2,4}};\nint e[]={4,5,1,1,1,3};int p=0;\nfor(int i=0;i<6;i++){int r=solve_lis(t[i]);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"int lis(const vector<int>& v, int idx, int prev, vector<vector<int>>& memo) {\n    // idx == (int)v.size() -> return 0\n    // int key = prev + 1; // shift: -1 diventa 0\n    // if (memo[idx][key] != -1) return memo[idx][key];\n    // int escludi = lis(v, idx+1, prev, memo);\n    // int includi = 0;\n    // if (prev == -1 || v[idx] > v[prev])\n    //     includi = 1 + lis(v, idx+1, idx, memo);\n    // return memo[idx][key] = max(escludi, includi);\n}"},
+
+  {id:65,category:"Ricorsione",difficulty:"Medio",title:"Edit Distance",
+  description:"Calcola il minimo numero di operazioni (inserisci, elimina, sostituisci) per trasformare s1 in s2.\nUsa memoizzazione su (i, j).",
+  signature:"int edit_distance(const string& s1, const string& s2, int i, int j, vector<vector<int>>& memo)",
+  publicCases:[{input:"s1=\"horse\", s2=\"ros\"",expected:"3"},{input:"s1=\"\", s2=\"abc\"",expected:"3"},{input:"s1=\"abc\", s2=\"abc\"",expected:"0"}],
+  hints:["i < 0 -> j+1 (inserisci tutto ciò che resta)","j < 0 -> i+1 (elimina tutto ciò che resta)","s1[i]==s2[j] -> edit_distance(i-1,j-1)","else: 1 + min(ins, del, sost)"],
+  testCode:"#include<iostream>\n#include<string>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint solve_ed(const string&a,const string&b){int n=a.size(),m=b.size();vector<vector<int>>memo(n,vector<int>(m,-1));return edit_distance(a,b,n-1,m-1,memo);}\nint main(){\nstring a[]={\"horse\",\"\",\"abc\",\"intention\",\"abc\",\"kitten\"};\nstring b[]={\"ros\",\"abc\",\"abc\",\"execution\",\"\",\"sitting\"};\nint e[]={3,3,0,5,3,3};int p=0;\nfor(int i=0;i<6;i++){int r=solve_ed(a[i],b[i]);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"int edit_distance(const string& s1, const string& s2,\n                  int i, int j, vector<vector<int>>& memo) {\n    // i < 0 -> return j + 1\n    // j < 0 -> return i + 1\n    // if (memo[i][j] != -1) return memo[i][j]\n    // if (s1[i] == s2[j]) return memo[i][j] = edit_distance(s1,s2,i-1,j-1,memo)\n    // return memo[i][j] = 1 + min({edit_distance(s1,s2,i,j-1,memo),   // ins\n    //                               edit_distance(s1,s2,i-1,j,memo),   // del\n    //                               edit_distance(s1,s2,i-1,j-1,memo)}) // sost\n}"},
+
+  {id:66,category:"Ricorsione",difficulty:"Difficile",title:"Partition Equal Subset",
+  description:"Dato un vettore, verifica se può essere diviso in due sottoinsiemi con la stessa somma.\nUsa memoizzazione su (idx, somma_rimanente).",
+  signature:"bool can_partition(const vector<int>& v, int idx, int target, vector<vector<int>>& memo)",
+  publicCases:[{input:"v={1,5,11,5}",expected:"true (partizione: {11},{1,5,5})"},{input:"v={1,2,3,5}",expected:"false"},{input:"v={2,2}",expected:"true"}],
+  hints:["target == 0 -> true","idx >= v.size() || target < 0 -> false","Prova: includi v[idx] oppure escludilo","Somma totale dispari -> false subito"],
+  testCode:"#include<iostream>\n#include<vector>\n#include<numeric>\nusing namespace std;\n__USER_CODE__\nbool solve_cp(const vector<int>&v){int sum=accumulate(v.begin(),v.end(),0);if(sum%2!=0)return false;int t=sum/2;int n=v.size();vector<vector<int>>memo(n,vector<int>(t+1,-1));return can_partition(v,0,t,memo);}\nint main(){\nvector<vector<int>>t={{1,5,11,5},{1,2,3,5},{2,2},{1,1},{3,3,3,4,5},{1}};\nbool e[]={1,0,1,1,0,0};int p=0;\nfor(int i=0;i<6;i++){bool r=solve_cp(t[i]);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"bool can_partition(const vector<int>& v, int idx, int target,\n                   vector<vector<int>>& memo) {\n    // target == 0 -> return true\n    // idx >= (int)v.size() || target < 0 -> return false\n    // if (memo[idx][target] != -1) return memo[idx][target]\n    // bool res = can_partition(v, idx+1, target - v[idx], memo)  // includi\n    //         || can_partition(v, idx+1, target,           memo)  // escludi\n    // return memo[idx][target] = res\n}"},
+
+  // ── STRINGHE RICORSIVE ────────────────────────────────────────────────────
+
+  {id:67,category:"Ricorsione",difficulty:"Medio",title:"Interlaccia due stringhe",
+  description:"Genera ricorsivamente tutte le stringhe ottenute interlacciando i caratteri di s1 e s2 mantenendo l'ordine relativo di ciascuna.",
+  signature:"void interleave(const string& s1, const string& s2, int i, int j, string curr, vector<string>& res)",
+  publicCases:[{input:"s1=\"ab\", s2=\"c\"",expected:"{\"abc\",\"acb\",\"cab\"}"},{input:"s1=\"\", s2=\"xy\"",expected:"{\"xy\"}"},{input:"s1=\"a\", s2=\"\"",expected:"{\"a\"}"}],
+  hints:["i==s1.size() && j==s2.size() -> salva curr","Se i < s1.size(): aggiungi s1[i] e ricorri con i+1","Se j < s2.size(): aggiungi s2[j] e ricorri con j+1"],
+  testCode:"#include<iostream>\n#include<string>\n#include<vector>\n#include<algorithm>\nusing namespace std;\n__USER_CODE__\nint main(){\nvector<tuple<string,string,vector<string>>>tc={\n  {\"ab\",\"c\",{\"abc\",\"acb\",\"cab\"}},\n  {\"\",\"xy\",{\"xy\"}},\n  {\"a\",\"\",{\"a\"}},\n  {\"ab\",\"cd\",{\"abcd\",\"acbd\",\"acdb\",\"cabd\",\"cadb\",\"cdab\"}}\n};int p=0;\nfor(auto&[s1,s2,exp]:tc){vector<string>res;interleave(s1,s2,0,0,\"\",res);sort(res.begin(),res.end());vector<string>ex=exp;sort(ex.begin(),ex.end());if(res==ex){cout<<\"PASS\"<<endl;p++;}else cout<<\"FAIL\"<<endl;}\ncout<<\"SCORE \"<<p<<\"/4\"<<endl;}",
+  starterCode:"void interleave(const string& s1, const string& s2,\n                int i, int j, string curr, vector<string>& res) {\n    // i==s1.size() && j==s2.size() -> res.push_back(curr); return\n    // if (i < (int)s1.size()) interleave(s1,s2,i+1,j,curr+s1[i],res)\n    // if (j < (int)s2.size()) interleave(s1,s2,i,j+1,curr+s2[j],res)\n}"},
+
+  {id:68,category:"Ricorsione",difficulty:"Medio",title:"Genera tutte le maiuscolizzazioni",
+  description:"Data una stringa alfanumerica, genera ricorsivamente tutte le versioni con ogni lettera maiuscola o minuscola.\nLe cifre rimangono invariate.",
+  signature:"void letter_case(const string& s, int idx, string curr, vector<string>& res)",
+  publicCases:[{input:"s=\"a1b\"",expected:"{\"a1b\",\"a1B\",\"A1b\",\"A1B\"}"},{input:"s=\"12\"",expected:"{\"12\"}"},{input:"s=\"C\"",expected:"{\"c\",\"C\"}"}],
+  hints:["idx == s.size() -> salva curr","Se s[idx] è cifra: ricorri senza biforcazione","Se lettera: biforca in minuscolo e maiuscolo"],
+  testCode:"#include<iostream>\n#include<string>\n#include<vector>\n#include<cctype>\n#include<algorithm>\nusing namespace std;\n__USER_CODE__\nint main(){\nvector<pair<string,int>>tc={{\"a1b\",4},{\"12\",1},{\"C\",2},{\"ab\",4},{\"3z\",2},{\"a1b2\",4}};int p=0;\nfor(auto&[s,exp]:tc){vector<string>res;letter_case(s,0,\"\",res);if((int)res.size()==exp){cout<<\"PASS got=\"<<res.size()<<endl;p++;}else cout<<\"FAIL got=\"<<res.size()<<\" exp=\"<<exp<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"void letter_case(const string& s, int idx, string curr, vector<string>& res) {\n    // idx == (int)s.size() -> res.push_back(curr); return\n    // if (isdigit(s[idx])) {\n    //     letter_case(s, idx+1, curr + s[idx], res)\n    // } else {\n    //     letter_case(s, idx+1, curr + (char)tolower(s[idx]), res)\n    //     letter_case(s, idx+1, curr + (char)toupper(s[idx]), res)\n    // }\n}"},
+
+  // ── GRAFI / MATRICI RICORSIVI ─────────────────────────────────────────────
+
+  {id:69,category:"Ricorsione",difficulty:"Difficile",title:"Flood Fill",
+  description:"Data una griglia di colori, partendo dalla cella (r,c) sostituisci ricorsivamente il colore originale con newColor per tutti i pixel connessi (4-direzioni).",
+  signature:"void flood_fill(vector<vector<int>>& grid, int r, int c, int oldColor, int newColor)",
+  publicCases:[{input:"grid={{1,1,1},{1,1,0},{1,0,0}}, r=1, c=1, new=2",expected:"{{2,2,2},{2,2,0},{2,0,0}}"},{input:"oldColor == newColor",expected:"griglia invariata"}],
+  hints:["r o c fuori bounds -> return","grid[r][c] != oldColor -> return","Aggiorna e ricorri nelle 4 direzioni"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nvoid pv2(const vector<vector<int>>&m){for(auto&r:m){for(int x:r)cout<<x<<\" \";cout<<endl;}}\nint main(){\nvector<vector<int>>g1={{1,1,1},{1,1,0},{1,0,0}};\nflood_fill(g1,1,1,1,2);\nvector<vector<int>>e1={{2,2,2},{2,2,0},{2,0,0}};int p=0;\nif(g1==e1){cout<<\"PASS 0\"<<endl;p++;}else{cout<<\"FAIL 0\"<<endl;pv2(g1);}\nvector<vector<int>>g2={{0,0,0},{0,1,1}};\nflood_fill(g2,1,1,1,3);\nvector<vector<int>>e2={{0,0,0},{0,3,3}};\nif(g2==e2){cout<<\"PASS 1\"<<endl;p++;}else cout<<\"FAIL 1\"<<endl;\nvector<vector<int>>g3={{1,2,1}};\nflood_fill(g3,0,0,1,5);\nvector<vector<int>>e3={{5,2,1}};\nif(g3==e3){cout<<\"PASS 2\"<<endl;p++;}else cout<<\"FAIL 2\"<<endl;\ncout<<\"SCORE \"<<p<<\"/3\"<<endl;}",
+  starterCode:"void flood_fill(vector<vector<int>>& grid, int r, int c,\n                int oldColor, int newColor) {\n    int N = grid.size(), M = grid[0].size();\n    // r < 0 || r >= N || c < 0 || c >= M -> return\n    // grid[r][c] != oldColor -> return\n    // grid[r][c] = newColor\n    // Ricorri nelle 4 direzioni: (r+1,c),(r-1,c),(r,c+1),(r,c-1)\n}"},
+
+  {id:70,category:"Ricorsione",difficulty:"Difficile",title:"Word Search",
+  description:"Data una griglia di caratteri e una parola, verifica se la parola esiste nella griglia seguendo celle adiacenti (4-direzioni) senza riusarle.",
+  signature:"bool word_search(vector<vector<char>>& board, const string& word, int r, int c, int idx)",
+  publicCases:[{input:"board={{A,B,C},{S,F,C},{A,D,E}}, word=\"ABCCED\"",expected:"true"},{input:"word=\"SEE\"",expected:"true"},{input:"word=\"ABCB\"",expected:"false"}],
+  hints:["idx == word.size() -> true","Fuori bounds o char diverso -> false","Segna visitato (board[r][c]='#'), ricorri, ripristina"],
+  testCode:"#include<iostream>\n#include<vector>\n#include<string>\nusing namespace std;\n__USER_CODE__\nbool find_word(vector<vector<char>>&b,const string&w){\nfor(int i=0;i<(int)b.size();i++)for(int j=0;j<(int)b[0].size();j++)if(word_search(b,w,i,j,0))return true;return false;}\nint main(){\nvector<vector<char>>b1={{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};\nint p=0;\nbool r0=find_word(b1,\"ABCCED\");cout<<(r0?\"PASS 0\":\"FAIL 0\")<<endl;p+=r0;\nvector<vector<char>>b2=b1;\nbool r1=find_word(b2,\"SEE\");cout<<(r1?\"PASS 1\":\"FAIL 1\")<<endl;p+=r1;\nvector<vector<char>>b3=b1;\nbool r2=!find_word(b3,\"ABCB\");cout<<(r2?\"PASS 2\":\"FAIL 2\")<<endl;p+=r2;\ncout<<\"SCORE \"<<p<<\"/3\"<<endl;}",
+  starterCode:"bool word_search(vector<vector<char>>& board, const string& word,\n                 int r, int c, int idx) {\n    // idx == (int)word.size() -> return true\n    // fuori bounds o board[r][c] != word[idx] -> return false\n    // char tmp = board[r][c]; board[r][c] = '#';  // segna\n    // bool found = word_search(board,word,r+1,c,idx+1)\n    //           || word_search(board,word,r-1,c,idx+1)\n    //           || word_search(board,word,r,c+1,idx+1)\n    //           || word_search(board,word,r,c-1,idx+1)\n    // board[r][c] = tmp;  // ripristina\n    // return found\n}"},
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // DAL PDF — FIRME PARTICOLARI (un solo param, param diversi, wrapped)
+  // ══════════════════════════════════════════════════════════════════════════
+
+  // PDF Es.4 — SOLO STRINGA (no idx): ricorsione tramite substr
+  {id:71,category:"Ricorsione",difficulty:"Facile",title:"Conta vocali (solo stringa)",
+  description:"Data una stringa, scrivi una funzione ricorsiva che conti le vocali.\nLa funzione ha come UNICO parametro la stringa: NON puoi aggiungere idx.\nUsa s.substr(1) per ridurre il problema.\nGestisci maiuscole e minuscole.",
+  signature:"int count_vowels_rec(const string& s)",
+  publicCases:[{input:'s = "Hello"',expected:"2"},{input:'s = ""',expected:"0"},{input:'s = "AEIOU"',expected:"5"}],
+  hints:["s.empty() -> 0","is_vowel(s[0]) ? 1 : 0","+ count_vowels_rec(s.substr(1))"],
+  testCode:"#include<iostream>\n#include<string>\nusing namespace std;\n__USER_CODE__\nint main(){\nstring t[]={\"Hello\",\"\",\"AEIOU\",\"xyz\",\"aEiOu\",\"ciao\"};\nint e[]={2,0,5,0,5,3};int p=0;\nfor(int i=0;i<6;i++){int r=count_vowels_rec(t[i]);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"bool is_vowel(char c) {\n    // vocale maiuscola o minuscola?\n}\nint count_vowels_rec(const string& s) {\n    // Unico parametro: s  (no idx!)\n    // s.empty() -> return 0\n    // (is_vowel(s[0]) ? 1 : 0) + count_vowels_rec(s.substr(1))\n}"},
+
+  // PDF Es.6 — CICLO + RICORSIONE: permuta(da_permutare, fissa, res)
+  {id:72,category:"Ricorsione",difficulty:"Medio",title:"Permutazioni stringa (da_perm + fissa)",
+  description:"Genera tutte le permutazioni di una stringa con caratteri distinti.\nUsa la firma storica del PDF: permuta(da_perm, fissa, res).\nIl ciclo for sceglie quale carattere spostare da da_perm a fissa ad ogni passo.",
+  signature:"void permuta(string da_perm, string fissa, vector<string>& res)",
+  publicCases:[{input:'permuta("abc","",res)',expected:"6 stringhe distinte"},{input:'permuta("ab","",res)',expected:"{\"ab\",\"ba\"}"},{input:'permuta("","xy",res)',expected:"{\"xy\"}"}],
+  hints:["da_perm.empty() -> res.push_back(fissa); return","for i in 0..da_perm.size()-1","nuovo_da_perm = substr(0,i)+substr(i+1); nuova_fissa = fissa+da_perm[i]"],
+  testCode:"#include<iostream>\n#include<string>\n#include<vector>\n#include<set>\nusing namespace std;\n__USER_CODE__\nint main(){\nstring dp[]={\"abc\",\"ab\",\"\",\"a\",\"abcd\",\"ab\"};\nstring fx[]=>{\"\",\"\",\"xy\",\"\",\"\",\"z\"};\nint exp[]={6,2,1,1,24,2};int p=0;\nfor(int i=0;i<6;i++){\nvector<string>res;permuta(dp[i],fx[i],res);\nset<string>st(res.begin(),res.end());\nbool ok=(int)res.size()==exp[i]&&(int)st.size()==exp[i];\nif(ok){cout<<\"PASS \"<<i<<\" got=\"<<res.size()<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<res.size()<<\" exp=\"<<exp[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"void permuta(string da_perm, string fissa, vector<string>& res) {\n    // da_perm.empty() -> res.push_back(fissa); return\n    // for (int i = 0; i < (int)da_perm.size(); i++) {\n    //     string nd = da_perm.substr(0,i) + da_perm.substr(i+1);\n    //     string nf = fissa + da_perm[i];\n    //     permuta(nd, nf, res);\n    // }\n}"},
+
+  // PDF Es.8 — WRAPPED: void ribalta(string& s) chiama helper con l,r
+  {id:73,category:"Ricorsione",difficulty:"Facile",title:"Ribalta stringa in-place (wrapped)",
+  description:"Ribalta ricorsivamente una stringa in-place: NON creare una copia, modifica s direttamente.\nEsporta una funzione con firma pulita void ribalta(string& s).\nInternamente usa un helper void ribalta_helper(string& s, int l, int r).",
+  signature:"void ribalta(string& s)   // wrapper pulito",
+  publicCases:[{input:'s = "hello"',expected:'"olleh"'},{input:'s = ""',expected:'""'},{input:'s = "a"',expected:'"a"'}],
+  hints:["ribalta_helper: l >= r -> return","swap(s[l], s[r])","ribalta_helper(s, l+1, r-1)","ribalta chiama helper con 0 e s.size()-1"],
+  testCode:"#include<iostream>\n#include<string>\nusing namespace std;\n__USER_CODE__\nint main(){\nstring t[]={\"hello\",\"\",\"a\",\"abcd\",\"racecar\",\"ab\"};\nstring e[]={\"olleh\",\"\",\"a\",\"dcba\",\"racecar\",\"ba\"};int p=0;\nfor(int i=0;i<6;i++){string s=t[i];ribalta(s);if(s==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<s<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<s<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"void ribalta_helper(string& s, int l, int r) {\n    // l >= r -> return\n    // swap(s[l], s[r])\n    // ribalta_helper(s, l+1, r-1)\n}\nvoid ribalta(string& s) {\n    // gestisci stringa vuota!\n    // chiama ribalta_helper(s, 0, (int)s.size()-1)\n}"},
+
+  // PDF Es.9 — SOLO VETTORE (no idx): usa back() + vector(begin,end-1)
+  {id:74,category:"Ricorsione",difficulty:"Medio",title:"MCD di un vettore (solo vettore)",
+  description:"Dato un vettore di interi positivi, calcola ricorsivamente il MCD di tutti gli elementi.\nProprietà: MCD(a,b,c) = MCD(a, MCD(b,c)).\nLa funzione ha come UNICO parametro il vettore (no idx).\nUsa v.back() e vector<int>(v.begin(), v.end()-1).",
+  signature:"int mcd_vettore(const vector<int>& v)   // solo vettore!",
+  publicCases:[{input:"v={12,8,4}",expected:"4"},{input:"v={7}",expected:"7"},{input:"v={6,9,12}",expected:"3"}],
+  hints:["v.size()==1 -> return v[0]","int last = v.back()","vector<int> rest(v.begin(), v.end()-1); return mcd(last, mcd_vettore(rest))"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\nint mcd(int a,int b){return a==b?a:(a>b?mcd(a-b,b):mcd(a,b-a));}\n__USER_CODE__\nint main(){\nvector<vector<int>>t={{12,8,4},{7},{6,9,12},{100,75,25},{3,3,3},{14,21,35}};\nint e[]={4,7,3,25,3,7};int p=0;\nfor(int i=0;i<6;i++){int r=mcd_vettore(t[i]);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"// mcd(a,b) e' gia' definita nel testCode\nint mcd_vettore(const vector<int>& v) {\n    // v.size()==1 -> return v[0]\n    // int last = v.back();\n    // vector<int> rest(v.begin(), v.end()-1);\n    // return mcd(last, mcd_vettore(rest));\n}"},
+
+  // PDF Es.10 — firma semplice, riduzione su n/2
+  {id:75,category:"Ricorsione",difficulty:"Facile",title:"Rappresentazione binaria",
+  description:"Dato un intero positivo, restituisci ricorsivamente la sua rappresentazione binaria come stringa.\nIl bit più significativo deve essere il PRIMO carattere.\nEsempio: 6 -> \"110\"",
+  signature:"string to_binary(int n)",
+  publicCases:[{input:"n=6",expected:'"110"'},{input:"n=1",expected:'"1"'},{input:"n=8",expected:'"1000"'}],
+  hints:["n==0 -> \"0\", n==1 -> \"1\" (casi base)","Ultima cifra: char('0' + n%2)","to_binary(n/2) + char('0' + n%2)"],
+  testCode:"#include<iostream>\n#include<string>\nusing namespace std;\n__USER_CODE__\nint main(){\nint t[]={6,1,8,5,10,255};\nstring e[]={\"110\",\"1\",\"1000\",\"101\",\"1010\",\"11111111\"};int p=0;\nfor(int i=0;i<6;i++){string r=to_binary(t[i]);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"string to_binary(int n) {\n    // n == 0 -> return \"0\"\n    // n == 1 -> return \"1\"\n    // return to_binary(n / 2) + char('0' + n % 2)\n}"},
+
+  // PDF Es.11 — UN SOLO PARAMETRO: ricorsione su prefisso s.substr(0, size-1)
+  {id:76,category:"Ricorsione",difficulty:"Medio",title:"Esadecimale a intero (un solo parametro)",
+  description:"Data una stringa che rappresenta un numero in base 16 (es. \"1F\", \"a3\"),\nconvertila ricorsivamente a intero con una funzione che ha UN SOLO parametro.\nRicorri sul prefisso s.substr(0, s.size()-1) e aggiungi il valore dell'ultimo carattere.",
+  signature:"int from_hex(const string& s)   // un solo parametro!",
+  publicCases:[{input:'s = "1F"',expected:"31"},{input:'s = "a"',expected:"10"},{input:'s = "FF"',expected:"255"}],
+  hints:["s.empty() -> 0","int val = hex_char_val(s.back())","from_hex(s.substr(0, s.size()-1)) * 16 + val"],
+  testCode:"#include<iostream>\n#include<string>\n#include<cctype>\nusing namespace std;\n__USER_CODE__\nint main(){\nstring t[]={\"1F\",\"a\",\"FF\",\"0\",\"10\",\"2A\"};\nint e[]={31,10,255,0,16,42};int p=0;\nfor(int i=0;i<6;i++){int r=from_hex(t[i]);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"int hex_char_val(char c) {\n    if (c >= '0' && c <= '9') return c - '0';\n    if (c >= 'a' && c <= 'f') return 10 + c - 'a';\n    if (c >= 'A' && c <= 'F') return 10 + c - 'A';\n    return 0;\n}\nint from_hex(const string& s) {\n    // s.empty() -> return 0\n    // return from_hex(s.substr(0, s.size()-1)) * 16 + hex_char_val(s.back())\n}"},
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // CICLO + RICORSIONE  (for loop obbligatorio dentro la funzione ricorsiva)
+  // ══════════════════════════════════════════════════════════════════════════
+
+  {id:77,category:"Ricorsione",difficulty:"Medio",title:"Genera stringhe di lunghezza n (ciclo + ricorsione)",
+  description:"Dato un intero len e una stringa alphabet, genera ricorsivamente tutte le stringhe di lunghezza esatta len composte solo da caratteri di alphabet.\nAd ogni livello di ricorsione usa un ciclo for sui caratteri dell'alfabeto.",
+  signature:"void gen_strings(int len, const string& alpha, string curr, vector<string>& res)",
+  publicCases:[{input:'len=2, alpha="ab"',expected:'{"aa","ab","ba","bb"}'},{input:'len=1, alpha="xyz"',expected:'{"x","y","z"}'},{input:'len=0, alpha="ab"',expected:'{""}'}],
+  hints:["len==0 -> res.push_back(curr); return","for (char c : alpha) { ... }","gen_strings(len-1, alpha, curr+c, res)  — nessun undo (curr per valore)"],
+  testCode:"#include<iostream>\n#include<string>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint main(){\nstring al[]={\"ab\",\"xyz\",\"ab\",\"a\",\"abc\",\"ab\"};\nint ln[]={2,1,0,3,2,3};\nint exp[]={4,3,1,1,9,8};int p=0;\nfor(int i=0;i<6;i++){vector<string>res;gen_strings(ln[i],al[i],\"\",res);if((int)res.size()==exp[i]){cout<<\"PASS \"<<i<<\" got=\"<<res.size()<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<res.size()<<\" exp=\"<<exp[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"void gen_strings(int len, const string& alpha, string curr, vector<string>& res) {\n    // len == 0 -> res.push_back(curr); return\n    // for (char c : alpha) {\n    //     gen_strings(len-1, alpha, curr + c, res);  // no undo: curr e' per valore\n    // }\n}"},
+
+  {id:78,category:"Ricorsione",difficulty:"Medio",title:"Combination Sum con riuso (ciclo + ricorsione)",
+  description:"Dato un vettore di interi positivi distinti ordinati e un target, trova tutte le combinazioni (con riuso dello stesso elemento) che sommano esattamente a target.\nUsa un ciclo for da idx in poi + ricorsione. Stessa struttura del backtracking, ma i è ripassato (non i+1).",
+  signature:"void combination_sum(const vector<int>& nums, int target, int idx, vector<int>& curr, vector<vector<int>>& res)",
+  publicCases:[{input:"nums={2,3,6,7}, target=7",expected:"{{2,2,3},{7}}"},{input:"nums={2,3,5}, target=8",expected:"{{2,2,2,2},{2,3,3},{3,5}}"},{input:"nums={2}, target=1",expected:"{}"}],
+  hints:["target==0 -> salva curr; return","target<0 -> return (pruning)","for i da idx: push, ricorri con i (stesso i = riuso), pop"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint main(){\nvector<int>n1={2,3,6,7},n2={2,3,5},n3={2},n4={1},n5={2,3},n6={3,4,5};\nint tg[]={7,8,1,4,6,5};\nint exp[]={2,3,0,1,3,1};int p=0;\nvector<vector<int>*>vs={&n1,&n2,&n3,&n4,&n5,&n6};\nfor(int i=0;i<6;i++){vector<int>curr;vector<vector<int>>res;combination_sum(*vs[i],tg[i],0,curr,res);if((int)res.size()==exp[i]){cout<<\"PASS \"<<i<<\" got=\"<<res.size()<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<res.size()<<\" exp=\"<<exp[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"void combination_sum(const vector<int>& nums, int target, int idx,\n                     vector<int>& curr, vector<vector<int>>& res) {\n    // target == 0 -> res.push_back(curr); return\n    // target <  0 -> return\n    // for (int i = idx; i < (int)nums.size(); i++) {\n    //     curr.push_back(nums[i]);\n    //     combination_sum(nums, target - nums[i], i, curr, res);  // i, NON i+1\n    //     curr.pop_back();\n    // }\n}"},
+
+  {id:79,category:"Ricorsione",difficulty:"Medio",title:"Tutte le partizioni additive di n (ciclo + ricorsione)",
+  description:"Genera tutte le partizioni additive di n: i modi di scrivere n come somma di interi positivi in ordine non-crescente.\nEsempio: 4 -> {4},{3,1},{2,2},{2,1,1},{1,1,1,1}.\nIl parametro max_val limita il valore massimo sceglibile per evitare duplicati.",
+  signature:"void partitions(int n, int max_val, vector<int>& curr, vector<vector<int>>& res)",
+  publicCases:[{input:"n=3, max_val=3",expected:"{{3},{2,1},{1,1,1}}"},{input:"n=1, max_val=1",expected:"{{1}}"},{input:"n=4, max_val=4",expected:"5 partizioni"}],
+  hints:["n==0 -> salva curr; return","for i da min(n,max_val) scendendo fino a 1","push i, ricorri con n-i e max_val=i, pop"],
+  testCode:"#include<iostream>\n#include<vector>\n#include<algorithm>\nusing namespace std;\n__USER_CODE__\nint main(){\nint ns[]={3,1,4,5,2,6};\nint mx[]={3,1,4,5,2,6};\nint exp[]={3,1,5,7,2,11};int p=0;\nfor(int i=0;i<6;i++){vector<int>curr;vector<vector<int>>res;partitions(ns[i],mx[i],curr,res);if((int)res.size()==exp[i]){cout<<\"PASS \"<<i<<\" got=\"<<res.size()<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<res.size()<<\" exp=\"<<exp[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"void partitions(int n, int max_val, vector<int>& curr, vector<vector<int>>& res) {\n    // n == 0 -> res.push_back(curr); return\n    // for (int i = min(n, max_val); i >= 1; i--) {\n    //     curr.push_back(i);\n    //     partitions(n - i, i, curr, res);\n    //     curr.pop_back();\n    // }\n}"},
+
+  {id:80,category:"Ricorsione",difficulty:"Medio",title:"Quick Sort (ciclo + ricorsione)",
+  description:"Implementa Quick Sort ricorsivamente.\nScegli il pivot come v[right]; usa un ciclo for per partizionare gli elementi in-place;\npoi ricorri sulle due metà.",
+  signature:"void quick_sort(vector<int>& v, int left, int right)",
+  publicCases:[{input:"v={5,3,1,4,2}",expected:"{1,2,3,4,5}"},{input:"v={1}",expected:"{1}"},{input:"v={3,1}",expected:"{1,3}"}],
+  hints:["left >= right -> return","pivot = v[right]; int i = left-1","for j=left..right-1: if v[j]<=pivot swap(v[++i],v[j]); poi swap(v[i+1],v[right])","Ricorri su [left, pi-1] e [pi+1, right]"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nvoid pv(const vector<int>&v){cout<<\"{\";for(size_t i=0;i<v.size();i++){if(i)cout<<\",\";cout<<v[i];}cout<<\"}\";}\nint main(){\nvector<vector<int>>t={{5,3,1,4,2},{1},{3,1},{},{5,5,3,3,1},{9,8,7,6}};\nvector<vector<int>>e={{1,2,3,4,5},{1},{1,3},{},{1,3,3,5,5},{6,7,8,9}};int p=0;\nfor(int i=0;i<6;i++){auto v=t[i];if(!v.empty())quick_sort(v,0,(int)v.size()-1);if(v==e[i]){cout<<\"PASS \"<<i<<\" got=\";pv(v);cout<<endl;p++;}else{cout<<\"FAIL \"<<i<<\" got=\";pv(v);cout<<endl;}}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"void quick_sort(vector<int>& v, int left, int right) {\n    // left >= right -> return\n    // int pivot = v[right], i = left - 1;\n    // for (int j = left; j < right; j++)    // ciclo!\n    //     if (v[j] <= pivot) swap(v[++i], v[j]);\n    // swap(v[i+1], v[right]);\n    // int pi = i + 1;\n    // quick_sort(v, left,  pi - 1);\n    // quick_sort(v, pi + 1, right);\n}"},
+
+  {id:81,category:"Ricorsione",difficulty:"Medio",title:"Appiattisci vettore di vettori (ciclo + ricorsione)",
+  description:"Dato un vector<vector<int>>, restituisci ricorsivamente un unico vector<int> con tutti gli elementi in ordine.\nRicorri sulle righe (parametro idx); per ogni riga usa un ciclo for per copiare gli elementi.",
+  signature:"vector<int> flatten(const vector<vector<int>>& vv, int idx)",
+  publicCases:[{input:"vv={{1,2},{3},{4,5,6}}, idx=0",expected:"{1,2,3,4,5,6}"},{input:"vv={}, idx=0",expected:"{}"},{input:"vv={{},{1},{}}, idx=0",expected:"{1}"}],
+  hints:["idx >= vv.size() -> return {}","vector<int> rest = flatten(vv, idx+1)","for (int x : vv[idx]) result.push_back(x);  poi appendi rest"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nvoid pv(const vector<int>&v){cout<<\"{\";for(size_t i=0;i<v.size();i++){if(i)cout<<\",\";cout<<v[i];}cout<<\"}\";}\nint main(){\nvector<vector<vector<int>>>t={{{1,2},{3},{4,5,6}},{},{{},{1},{}},{{1,2,3}},{{10},{20},{30}},{{1},{1},{1}}};\nvector<vector<int>>e={{1,2,3,4,5,6},{},{1},{1,2,3},{10,20,30},{1,1,1}};int p=0;\nfor(int i=0;i<6;i++){auto r=flatten(t[i],0);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\";pv(r);cout<<endl;p++;}else{cout<<\"FAIL \"<<i<<\" got=\";pv(r);cout<<endl;}}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"vector<int> flatten(const vector<vector<int>>& vv, int idx) {\n    // idx >= (int)vv.size() -> return {}\n    // vector<int> result;\n    // for (int x : vv[idx]) result.push_back(x);  // ciclo sulla riga corrente!\n    // vector<int> rest = flatten(vv, idx + 1);    // ricorsione sulle righe successive\n    // for (int x : rest)    result.push_back(x);\n    // return result;\n}"},
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // WRAPPED — firma pulita esterna + helper ricorsivo interno
+  // ══════════════════════════════════════════════════════════════════════════
+
+  {id:82,category:"Ricorsione",difficulty:"Facile",title:"Digital root (wrapped)",
+  description:"Il digital root di n è la somma ricorsiva delle sue cifre fino a ottenere una singola cifra.\nEsempio: 493 → 4+9+3=16 → 1+6=7.\nEsporta int digital_root(int n) che usa digit_sum (già definita) come helper.\nNota: digital_root richiama se stessa su digit_sum(n), non su n direttamente.",
+  signature:"int digital_root(int n)   // usa digit_sum(n) come helper",
+  publicCases:[{input:"n=493",expected:"7"},{input:"n=9",expected:"9"},{input:"n=99",expected:"9"}],
+  hints:["n < 10 -> return n (già una sola cifra)","return digital_root(digit_sum(n))","digit_sum è già fornita nel testCode"],
+  testCode:"#include<iostream>\nusing namespace std;\nint digit_sum(int n){if(n<10)return n;return n%10+digit_sum(n/10);}\n__USER_CODE__\nint main(){\nint t[]={493,9,99,0,1234,999};\nint e[]={7,9,9,0,1,9};int p=0;\nfor(int i=0;i<6;i++){int r=digital_root(t[i]);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<\" exp=\"<<e[i]<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"// digit_sum(n) e' gia' definita\nint digital_root(int n) {\n    // n < 10 -> return n\n    // return digital_root(digit_sum(n))\n}"},
+
+  {id:83,category:"Ricorsione",difficulty:"Facile",title:"Rimuovi tutti gli x (solo v e x)",
+  description:"Dato un vettore e un intero x, restituisci ricorsivamente un nuovo vettore senza alcuna occorrenza di x.\nLa funzione ha SOLO due parametri (no idx): usa v.back() e vector<int>(v.begin(), v.end()-1).",
+  signature:"vector<int> remove_all(const vector<int>& v, int x)",
+  publicCases:[{input:"v={1,2,3,2,4}, x=2",expected:"{1,3,4}"},{input:"v={}, x=1",expected:"{}"},{input:"v={5,5,5}, x=5",expected:"{}"}],
+  hints:["v.empty() -> return {}","int last = v.back(); vector<int> rest(v.begin(), v.end()-1)","result = remove_all(rest, x); if (last != x) result.push_back(last)"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nvoid pv(const vector<int>&v){cout<<\"{\";for(size_t i=0;i<v.size();i++){if(i)cout<<\",\";cout<<v[i];}cout<<\"}\";}\nint main(){\nvector<int>vv[]={{1,2,3,2,4},{},{5,5,5},{1,2,3},{3,1,3,1},{2}};\nint xx[]={2,1,5,9,3,2};\nvector<int>e[]={{1,3,4},{},{},{1,2,3},{1,1},{}};\nint p=0;\nfor(int i=0;i<6;i++){auto r=remove_all(vv[i],xx[i]);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\";pv(r);cout<<endl;p++;}else{cout<<\"FAIL \"<<i<<\" got=\";pv(r);cout<<endl;}}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"vector<int> remove_all(const vector<int>& v, int x) {\n    // v.empty() -> return {}\n    // int last = v.back();\n    // vector<int> rest(v.begin(), v.end()-1);\n    // vector<int> result = remove_all(rest, x);\n    // if (last != x) result.push_back(last);\n    // return result;\n}"},
+
+  {id:84,category:"Ricorsione",difficulty:"Facile",title:"Vettore ordinato (solo vettore, wrapped)",
+  description:"Verifica se un vettore è ordinato in modo non-decrescente.\nLa funzione ha come UNICO parametro il vettore (no idx).\nUsa v.back() e vector<int>(v.begin(), v.end()-1) per ridurre il problema.",
+  signature:"bool is_sorted_rec(const vector<int>& v)   // solo v!",
+  publicCases:[{input:"v={1,2,3,4}",expected:"true"},{input:"v={1,3,2}",expected:"false"},{input:"v={}",expected:"true"}],
+  hints:["v.size() <= 1 -> true","int last = v.back(); vector<int> rest(v.begin(), v.end()-1)","if (!is_sorted_rec(rest)) return false; return rest.back() <= last"],
+  testCode:"#include<iostream>\n#include<vector>\nusing namespace std;\n__USER_CODE__\nint main(){\nvector<vector<int>>t={{1,2,3,4},{1,3,2},{},{5},{1,1,2},{3,2,1}};\nbool e[]={1,0,1,1,1,0};int p=0;\nfor(int i=0;i<6;i++){bool r=is_sorted_rec(t[i]);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"bool is_sorted_rec(const vector<int>& v) {\n    // v.size() <= 1 -> return true\n    // int last = v.back();\n    // vector<int> rest(v.begin(), v.end()-1);\n    // if (!is_sorted_rec(rest)) return false;\n    // return rest.back() <= last;\n}"},
+
+  {id:85,category:"Ricorsione",difficulty:"Medio",title:"Palindromo (wrapped pulito)",
+  description:"Verifica se una stringa è palindroma.\nEsporta bool is_palindrome(const string& s) con firma pulita.\nInternamente usa bool pal_helper(const string& s, int l, int r) con due indici.\nLa funzione pubblica non ha parametri aggiuntivi.",
+  signature:"bool is_palindrome(const string& s)   // wrapper pulito, zero indici esposti",
+  publicCases:[{input:'s = "racecar"',expected:"true"},{input:'s = "hello"',expected:"false"},{input:'s = ""',expected:"true"}],
+  hints:["pal_helper: l >= r -> true","s[l] != s[r] -> false","pal_helper(s, l+1, r-1)","is_palindrome chiama pal_helper(s, 0, s.size()-1)"],
+  testCode:"#include<iostream>\n#include<string>\nusing namespace std;\n__USER_CODE__\nint main(){\nstring t[]={\"racecar\",\"hello\",\"\",\"a\",\"abba\",\"ab\"};\nbool e[]={1,0,1,1,1,0};int p=0;\nfor(int i=0;i<6;i++){bool r=is_palindrome(t[i]);if(r==e[i]){cout<<\"PASS \"<<i<<\" got=\"<<r<<endl;p++;}else cout<<\"FAIL \"<<i<<\" got=\"<<r<<endl;}\ncout<<\"SCORE \"<<p<<\"/6\"<<endl;}",
+  starterCode:"bool pal_helper(const string& s, int l, int r) {\n    // l >= r -> return true\n    // s[l] != s[r] -> return false\n    // return pal_helper(s, l+1, r-1)\n}\nbool is_palindrome(const string& s) {\n    // chiama pal_helper con gli indici giusti\n    // gestisci stringa vuota!\n}"},
+
+
+
+
+
+
 ];
