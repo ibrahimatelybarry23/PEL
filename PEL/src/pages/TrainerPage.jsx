@@ -2,11 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import MonacoEditor from "@monaco-editor/react";
 import { EXERCISES } from "../exercises.jsx";
 
-const CATS = ["Tutti","Vettori","Stringhe","Sorting","Ricorsione","Classi"];
+const CATS = ["Tutti","Vettori","Stringhe","Sorting","Ricorsione","Classi","Liste","Stack","Esame","Esame - Liste"];
 const dc = d => d==="Facile"?"#22c55e":d==="Medio"?"#f59e0b":"#ef4444";
 const db = d => d==="Facile"?"rgba(34,197,94,0.12)":d==="Medio"?"rgba(245,158,11,0.12)":"rgba(239,68,68,0.12)";
-const PUB = 3;
-const PRI = 3;
+const PUB = 1;
+const PRI = 9;
 
 const MONACO_OPTIONS = {
   fontSize:13, fontFamily:"'JetBrains Mono','Fira Code',monospace",
@@ -228,7 +228,7 @@ export default function TrainerPage() {
       const data = await resp.json();
       const parsed = parseOutput(data.program_output||"", data.compiler_error||"");
       setRes(parsed);
-      if (parsed.compiles && parsed.tests.length===6 && parsed.tests.every(t=>t.passed)) markDone();
+      if (parsed.compiles && parsed.tests.length===10 && parsed.tests.every(t=>t.passed)) markDone();
     } catch(e) {
       setRes({ compiles:false, error:"Errore di rete: "+String(e), tests:[], score:"0/0" });
     }

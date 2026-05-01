@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -79,35 +79,41 @@ export default function NotesPage() {
         </div>
 
         <div style={{ flex:1, overflowY:'auto', padding:'24px 32px 60px', maxWidth:800 }}>
-          <div className="md-content">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              components={{
-                code({ node, inline, className, children, ...props }) {
-                  const match = /language-(\w+)/.exec(className || '')
-                  return !inline && match ? (
-                    <SyntaxHighlighter
-                      style={vscDarkPlus}
-                      language={match[1]}
-                      PreTag="div"
-                      customStyle={{
-                        margin:'0 0 16px 0', borderRadius:8,
-                        border:'1px solid var(--border)',
-                        fontSize:12, lineHeight:1.7,
-                      }}
-                      {...props}
-                    >
-                      {String(children).replace(/\n$/, '')}
-                    </SyntaxHighlighter>
-                  ) : (
-                    <code className={className} {...props}>{children}</code>
-                  )
-                }
-              }}
-            >
-              {active.md}
-            </ReactMarkdown>
-          </div>
+          {active.component ? (
+            <Suspense fallback={<div style={{ color: 'var(--text-muted)', fontSize: 13, padding: '24px 0' }}>Caricamento…</div>}>
+              <active.component />
+            </Suspense>
+          ) : (
+            <div className="md-content">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  code({ node, inline, className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || '')
+                    return !inline && match ? (
+                      <SyntaxHighlighter
+                        style={vscDarkPlus}
+                        language={match[1]}
+                        PreTag="div"
+                        customStyle={{
+                          margin:'0 0 16px 0', borderRadius:8,
+                          border:'1px solid var(--border)',
+                          fontSize:12, lineHeight:1.7,
+                        }}
+                        {...props}
+                      >
+                        {String(children).replace(/\n$/, '')}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <code className={className} {...props}>{children}</code>
+                    )
+                  }
+                }}
+              >
+                {active.md}
+              </ReactMarkdown>
+            </div>
+          )}
         </div>
       </div>
     </div>
